@@ -9,9 +9,6 @@ class MLP(torch.nn.Module):
         self.fc4 = torch.nn.Linear(128, 1)
         self.act = torch.nn.GELU()
 
-    def loss(self):
-        return torch.nn.MSELoss()
-
     def forward(self, x):
         x = self.act(self.fc1(x))
         x = self.act(self.fc2(x))
@@ -31,9 +28,6 @@ class ElasticNet(torch.nn.Module):
             if 'weight' in k:
                 v.grad.add_(torch.sign(v.data), alpha=self.alpha)
                 v.grad.add_(v, alpha=self.beta)
-
-    def loss(self):
-        return torch.nn.MSELoss() + torch.nn.L1Loss() + 
 
     def forward(self, x):
         x = self.act(self.fc1(x))
